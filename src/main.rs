@@ -1,12 +1,30 @@
+use clap::Parser;
 use std::{io, thread, time};
 
+#[derive(Parser, Debug)]
+struct Args {
+    #[arg(long, default_value_t = 25)]
+    study_mins: i32,
+    #[arg(long, default_value_t = 0)]
+    study_secs: i32,
+    #[arg(long, default_value_t = 5)]
+    break_mins: i32,
+    #[arg(long, default_value_t = 0)]
+    break_secs: i32,
+    #[arg(long, default_value_t = 30)]
+    long_break_mins: i32,
+    #[arg(long, default_value_t = 0)]
+    long_break_secs: i32,
+}
+
 fn main() {
+    let args = Args::parse();
     for i in 0..4 {
         if i == 4 {
             timer(30, 0, "Long break");
         } else {
-            timer(25, 0, "Study");
-            timer(5, 0, "Break");
+            timer(args.study_mins, args.study_secs, "Study");
+            timer(args.break_mins, args.break_secs, "Break");
         }
     }
 }
